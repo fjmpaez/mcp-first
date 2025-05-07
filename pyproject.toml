@@ -1,0 +1,17 @@
+[project]
+name = "mcp-first"
+version = "0.1.0"
+description = "MCP simple server"
+authors = [
+    {name = "Francisco Javier Martínez Páez"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp[cli] (>=1.7.1,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

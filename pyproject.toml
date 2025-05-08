@@ -8,10 +8,17 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "mcp[cli] (>=1.7.1,<2.0.0)"
+    "mcp[cli] (>=1.7.1,<2.0.0)",
+    "gitpython (>=3.1.44,<4.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+    "openai (>=1.77.0,<2.0.0)",
+    "argparse (>=1.4.0,<2.0.0)"
 ]
 
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false

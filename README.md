@@ -5,7 +5,7 @@ This is a simple example of a MCP server for interacting with a git repository. 
 
 The repository is create as reference on https://adictosaltrabajo.com tutorial.
 
-It includes just two git ools, one prompt an one resource.
+It includes just two git tools, one prompt and one resource.
 
 ## Installation
 ```bash
@@ -16,6 +16,6 @@ It includes just two git ools, one prompt an one resource.
 
 ## Usage
 ```bash
-poetry run python src/client.py  ./src/git_server/main.py absolute_path_to_git_repo
+poetry run python src/git-explorer.py  ./src/git_server/main.py absolute_path_to_git_repo
 ```
 

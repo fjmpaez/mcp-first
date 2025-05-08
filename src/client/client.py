@@ -2,11 +2,13 @@ from typing import Optional
 from contextlib import AsyncExitStack
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
+from urllib.parse import quote
 
 class MCPStdioClient:
     """It handles communications with MCP Git Server."""
     def __init__(self, repo_path: str):
         self.repo_path = repo_path
+        self._resource_template = None
         self._session: Optional[ClientSession] = None
         self.exit_stack = AsyncExitStack()
 
@@ -30,16 +32,16 @@ class MCPStdioClient:
         initialize_result = await self._session.initialize()
 
     
-        response_tools = await self._session.list_tools()
-        response_prompts = await self._session.list_prompts()
-        response_resources = await self._session.list_resources()
-        response_resources_templates = await self._session.list_resource_templates()
+        self._response_tools = await self._session.list_tools()
+        self._response_prompts = await self._session.list_prompts()
+        self._response_resources = await self._session.list_resources()
+        self._response_resources_templates = await self._session.list_resource_templates()
 
         print("\n✅ Connnected to MCP Server:", initialize_result.serverInfo.name)
-        print("\n✅ Available tools:", [tool.name for tool in response_tools.tools])
-        print("\n✅ Available prompts:", [prompt.name for prompt in response_prompts.prompts])
-        print("\n✅ Available resources:", [resource.name for resource in response_resources.resources])
-        print("\n✅ Available resource templates:", [resourceTemplates.name for resourceTemplates in response_resources_templates.resourceTemplates])
+        print("\n✅ Available tools:", [tool.name for tool in self._response_tools.tools])
+        print("\n✅ Available prompts:", [prompt.name for prompt in self._response_prompts.prompts])
+        print("\n✅ Available resources:", [resource.name for resource in self._response_resources.resources])
+        print("\n✅ Available resource templates:", [resourceTemplates.name for resourceTemplates in self._response_resources_templates.resourceTemplates])
         
 
     async def get_tools(self):
@@ -49,6 +51,16 @@ class MCPStdioClient:
     async def get_prompt(self, name: str, arguments: dict):
         response = await self._session.get_prompt(name=name, arguments=arguments)
         return response.messages[0].content.text
+
+    async def get_summary_resource(self):
+        if self._resource_template is None:
+            self._resource_template = next((resource for resource in self._response_resources_templates.resourceTemplates if resource.name == "repository_summary"), None)
+
+        print(self._resource_template)
+        uri = self._resource_template.uriTemplate.format(repository_path=quote(self.repo_path, safe=[])) 
+
+        response = await self._session.read_resource(uri=uri)
+        return response.contents[0].text
 
     async def get_resource(self, uri: str):
         return await self._session.read_resource(uri=uri)

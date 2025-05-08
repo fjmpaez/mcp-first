@@ -2,7 +2,6 @@ import asyncio
 import json
 from dotenv import load_dotenv
 import argparse
-from urllib.parse import quote
 from client.client import MCPStdioClient
 from model.models import OpenAIClient, ModelClient
 
@@ -23,7 +22,9 @@ class Agent:
             arguments={"repository_path": self._mcp_client.repo_path}
         )
         
-        self._repository_summary = await self._mcp_client.get_resource(uri=f"repository://{quote(self._mcp_client.repo_path, safe=[])}/summary")
+        self._repository_summary = await self._mcp_client.get_summary_resource()
+        
+
         tools = await self._mcp_client.get_tools()
 
         self._available_tools = [{
@@ -38,7 +39,7 @@ class Agent:
     async def process_query(self, query: str):
 
         messages = [
-            {"role": "system", "content": self._system_prompt + "\n\n Repository Summary:" + self._repository_summary.contents[0].text},
+            {"role": "system", "content": self._system_prompt + "\n\n Repository Summary:" + self._repository_summary},
             {"role": "user", "content": query}
         ]
 

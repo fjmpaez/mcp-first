@@ -3,7 +3,7 @@ from contextlib import AsyncExitStack
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-class MCPClient:
+class MCPStdioClient:
     """It handles communications with MCP Git Server."""
     def __init__(self, repo_path: str):
         self.repo_path = repo_path

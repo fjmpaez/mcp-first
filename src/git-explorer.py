@@ -3,7 +3,7 @@ import json
 from dotenv import load_dotenv
 import argparse
 from urllib.parse import quote
-from client.client import MCPClient
+from client.client import MCPStdioClient
 from model.models import OpenAIClient, ModelClient
 
 # Cargar variables de entorno
@@ -11,7 +11,7 @@ load_dotenv()
 
 class Agent:
     """Coordina las interacciones entre el usuario, el servidor MCP y OpenAI."""
-    def __init__(self, mcp_client: MCPClient, model_client: ModelClient):
+    def __init__(self, mcp_client: MCPStdioClient, model_client: ModelClient):
         self._mcp_client = mcp_client
         self._model_client = model_client
         self._system_prompt = ""
@@ -81,7 +81,7 @@ async def main():
     parser.add_argument("repository_path", type=str, help="Path to the git repository.")
     args = parser.parse_args()
 
-    mcp_client = MCPClient(repo_path=args.repository_path)
+    mcp_client = MCPStdioClient(repo_path=args.repository_path)
     model_client = OpenAIClient()
     agent = Agent(mcp_client, model_client)
 

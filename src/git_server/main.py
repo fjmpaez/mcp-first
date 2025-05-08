@@ -62,7 +62,7 @@ def status(repository_path: str) -> str:
     
 @mcp.tool()
 def log(repository_path: str) -> str:
-    """Shows commit logs.
+    """Shows last 50 commit logs.
 
     Args:
         repository_path: path to the repository
@@ -70,7 +70,18 @@ def log(repository_path: str) -> str:
 
     try:
         git_repo = git.Repo(repository_path)
-        return git_repo.git.log()
+        commits = list(git_repo.iter_commits(max_count=50))
+        log = []
+        for commit in commits:
+            log.append(
+                f"Author: {commit.author}\n"
+                f"Date: {commit.authored_datetime}\n"
+                f"Commit: {commit.hexsha}\n"
+                f"Message: {commit.message}\n"
+        )
+        return log
+
+
     except git.exc.InvalidGitRepositoryError:
         return f"Error: {repository_path} is not a valid git repository"
     except Exception as e:

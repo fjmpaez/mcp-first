@@ -10,12 +10,12 @@ It includes just two git tools, one prompt and one resource.
 ## Installation
 ```bash
    git clone https://github.com/fjmpaez/mcp-first.git
-   cd mcp-git-server
+   cd mcp-first
    poetry install
 ```
 
 ## Usage
 ```bash
-poetry run python src/git-explorer.py  ./src/git_server/main.py absolute_path_to_git_repo
+poetry run python src/git-explorer.py  ./src/server/server.py absolute_path_to_git_repo
 ```
 

@@ -1,4 +1,4 @@
-# Git Executor MCP Server.
+# Git Executor MCP Server and client.
 
 ## Description
 This is a simple example of a MCP server for interacting with a git repository. The server has been created using Python SDK: https://github.com/modelcontextprotocol/python-sdk

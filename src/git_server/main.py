@@ -59,6 +59,22 @@ def status(repository_path: str) -> str:
         return f"Error: {repository_path} is not a valid git repository"
     except Exception as e:
         return f"Excepción executing status: {str(e)}"
+    
+@mcp.tool()
+def log(repository_path: str) -> str:
+    """Shows commit logs.
+
+    Args:
+        repository_path: path to the repository
+    """
+
+    try:
+        git_repo = git.Repo(repository_path)
+        return git_repo.git.log()
+    except git.exc.InvalidGitRepositoryError:
+        return f"Error: {repository_path} is not a valid git repository"
+    except Exception as e:
+        return f"Excepción executing log: {str(e)}"
  
 
 if __name__ == "__main__":

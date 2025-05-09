@@ -15,16 +15,10 @@ class OpenAIClient(ModelClient):
         self.model_name = model_name
         self.client = OpenAI()
 
-    def chat_completion(self, messages:list, tools: list = None):
-        
+    def chat_completion(self, messages: list[dict], tools: list[dict] = None):
         args = {
             "model": self.model_name,
             "messages": messages,
+            **({"tools": tools, "tool_choice": "auto"} if tools else {})
         }
-
-        if tools:
-            args["tools"] = tools
-            args["tool_choice"] = "auto"
-
-
         return self.client.chat.completions.create(**args)

@@ -9,7 +9,7 @@ from model.models import OpenAIClient, ModelClient
 load_dotenv()
 
 class Agent:
-    """Coordina las interacciones entre el usuario, el servidor MCP y OpenAI."""
+    """Coordina las interacciones entre el usuario, el servidor MCP y el LLM."""
     def __init__(self, mcp_client: MCPStdioClient, model_client: ModelClient):
         self._mcp_client = mcp_client
         self._model_client = model_client

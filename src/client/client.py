@@ -13,14 +13,8 @@ class MCPStdioClient:
         self.exit_stack = AsyncExitStack()
 
     async def connect(self, server_script_path: str):
-        is_python = server_script_path.endswith('.py')
-        is_js = server_script_path.endswith('.js')
-        if not (is_python or is_js):
-            raise ValueError("El script debe ser .py o .js")
-            
-        command = "python" if is_python else "node"
         server_params = StdioServerParameters(
-            command=command,
+            command="python",
             args=[server_script_path],
             env=None
         )
@@ -30,14 +24,13 @@ class MCPStdioClient:
         self._session = await self.exit_stack.enter_async_context(ClientSession(stdio, write))
         
         initialize_result = await self._session.initialize()
-
     
         self._response_tools = await self._session.list_tools()
         self._response_prompts = await self._session.list_prompts()
         self._response_resources = await self._session.list_resources()
         self._response_resources_templates = await self._session.list_resource_templates()
 
-        print("\n✅ Connnected to MCP Server:", initialize_result.serverInfo.name)
+        print("\n✅ Connected to MCP Server:", initialize_result.serverInfo.name)
         print("\n✅ Available tools:", [tool.name for tool in self._response_tools.tools])
         print("\n✅ Available prompts:", [prompt.name for prompt in self._response_prompts.prompts])
         print("\n✅ Available resources:", [resource.name for resource in self._response_resources.resources])
